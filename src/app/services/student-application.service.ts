@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class StudentApplicationService {  
+export class StudentApplicationService { 
 
   apiUrl = environment.apiUrl;
   constructor(
@@ -41,5 +41,9 @@ export class StudentApplicationService {
       responseType: 'text'
     }); 
   } 
+
+  getStudentDetails(id: number) {
+    return this.http.get(this.apiUrl + '/registerDetails/' + id)
+  }  
  
 }

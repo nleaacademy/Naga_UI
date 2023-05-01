@@ -13,6 +13,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <!-- <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th> -->
+                                            <th></th>
                                             <th>Id</th>
                                             <th>Student Name</th>
                                             <th>Register No</th>
@@ -29,7 +31,11 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngIf="student.length == 0">No record found.</tr>
-                                        <tr *ngFor="let application of student">
+                                        <tr *ngFor="let application of student let i=index">
+                                            <td><input class="form-check-input"
+                                                 (change)="onChange(application.id, $event.target.checked)" 
+                                                 name="{{ application.id }}" type="checkbox" id="{{application.id}}"></td>
+                                            <!-- <td> <input type="checkbox" name="{{application.id}}" id="{{application.id}}" value="{{application.id}}" [(ngModel)]="student[i].checked" ></td> -->
                                             <td>{{application.id}}</td>
                                             <td>{{application.studentName}}</td>
                                             <td>{{application.registerNo}}</td>
@@ -40,8 +46,8 @@
                                             <td>{{application.mobileNo}}</td>
                                             <td>{{application.emailId}}</td>
                                             <td>{{application.userId}}</td>   
-                                            <td><a>sample</a></td>
-                                            <td><a>View</a></td>                                            
+                                            <td><a (click)="downloadFile(application.bonafide)">{{application.bonafide.fileName}}</a></td>
+                                            <td><a>Edit</a></td>                                            
                                         </tr>
                                         
                                     </tbody>
@@ -53,7 +59,9 @@
                 </div>
             </div>
         </div>
-
+        <div class="btn_wrap">
+            <button class="btn-nagas btn-nagas_small" (click)="save()">SAVE</button>
+        </div>
         
     </div>
 </div>

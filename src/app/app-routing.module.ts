@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: '', component: LandingPageComponent },
       { path: 'studentapplication/:id', component: StudentApplicationComponent },
       { path: 'studentDashboard/:id', component: StudentDashboardComponent },
-      { path: 'subscriberDashboard', component: SubscriberDashboardComponent },
+      { path: 'subscriberDashboard/:id', component: SubscriberDashboardComponent },
       { path: 'adminDashboard', component: AdminDashboardComponent }
     ]
   },

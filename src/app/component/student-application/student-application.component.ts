@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationRequest } from 'src/app/model/applicationRequest';
+import { Register } from 'src/app/model/loginResponse';
 import { StudentApplicationService } from 'src/app/services/student-application.service';
 
 @Component({
@@ -12,8 +13,8 @@ import { StudentApplicationService } from 'src/app/services/student-application.
 export class StudentApplicationComponent implements OnInit {
   studentForm: FormGroup;
   submitted = false;
-  selectedFiles: FileList;  
-  currentFileUpload: File;  
+  selectedFiles: FileList;
+  currentFileUpload: File;
   request = new ApplicationRequest();
   sub: any;
   id: number;
@@ -28,7 +29,6 @@ export class StudentApplicationComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-    console.log(this.id);
 
     this.createForm();
   }
@@ -46,37 +46,54 @@ export class StudentApplicationComponent implements OnInit {
       emailId: ['', [Validators.required, Validators.email]],
       userId: [this.id]
     });
+    console.log(this.id);
+    if (this.id) {
+      this.service.getStudentDetails(this.id).subscribe((response: Register) => {
+        console.log('Response:', response);
+        if (response) {
+          this.studentForm.get('emailId').setValue(response.emailId);
+          this.studentForm.get('mobileNo').setValue(response.mobileNo);
+          this.studentForm.get('registerNo').setValue(response.userName);
+        }
+      });
+    }
+    // this.studentForm.get('emailId').disable();
+    // this.studentForm.get('mobileNo').disable();
+    // this.studentForm.get('registerNo').disable();
   }
 
-  selectFile(event) {  
-    this.selectedFiles = event.target.files;  
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
   }
 
-  saveStudentApplication() {    
+  saveStudentApplication() {
     this.submitted = true;
     if (this.studentForm.valid) {
       this.request = this.studentForm.value;
       console.log('the request:', this.request);
       console.log('studentForm:', this.studentForm.value);
-      
-      this.service.register(this.studentForm.value).subscribe((data: string) => {
+      console.log(this.studentForm.get('emailId').value);
+      console.log(this.studentForm.get('mobileNo').value);
+      console.log(this.studentForm.get('registerNo').value);
+
+      this.service.register(this.request).subscribe((data: string) => {
         console.log('Response:', data);
 
         if (data) {
-          if(this.selectedFiles != null)  {
+          if (this.selectedFiles != null) {
             this.currentFileUpload = this.selectedFiles.item(0);
-            console.log('currentFileUpload:',this.currentFileUpload);  
-            this.service.uploadFile( this.currentFileUpload,this.id).subscribe((response:any)=>{
-              console.log('Upload Response:',response);
-              if(response){
+            console.log('currentFileUpload:', this.currentFileUpload);
+            this.service.uploadFile(this.currentFileUpload, this.id).subscribe((response: any) => {
+              console.log('Upload Response:', response);
+              if (response) {
 
               }
             },
-            (error)=>{
+              (error) => {
 
-            });
+              });
           }
-         
+
           this.router.navigateByUrl(`/home/studentDashboard/${this.id}`);
         }
       }, (error) => {

@@ -16,6 +16,7 @@ export class StudentDashboardComponent implements OnInit {
   application = new Application();
   studentEnable: boolean = false;
   showTable: boolean = false;
+  checked:any;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -50,6 +51,9 @@ export class StudentDashboardComponent implements OnInit {
 
   studentApplication() {
     this.router.navigateByUrl(`/home/studentapplication/${this.id}`);
+  }
+  changeSelection(){
+    console.log('Select:',this.checked)
   }
 }
 
