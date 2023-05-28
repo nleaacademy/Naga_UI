@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl:'http://localhost:8081/nagas/api'
+ // apiUrl:'http://localhost:8081/nagas/api'
+  apiUrl:'https://nlea-api.azurewebsites.net/nagas/api'
 };
 
 /*
